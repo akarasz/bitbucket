@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css?family=Anonymous+Pro');
+
+#bitpuzzle .board {
+  margin: 0 auto;
+}
+
+#bitpuzzle .hints,
+#bitpuzzle .puzzle {
+  border-collapse: collapse;
+
+  font-family: 'Anonymous Pro', monospace;
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+#bitpuzzle .hints td,
+#bitpuzzle .puzzle td {
+  width: 2rem;
+  height: 2rem;
+
+  border: 1px solid rgba(0, 0, 0, 0.6);
+}
+
+#bitpuzzle .hints td {
+  border-color: rgba(0, 0, 0, 0);
+}
+
+#bitpuzzle .puzzle .selected {
+  background-color: rgba(131, 177, 255, 1);
+}
