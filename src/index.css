@@ -1,11 +1,11 @@
 @import url('https://fonts.googleapis.com/css?family=Anonymous+Pro');
 
-#bitpuzzle .board {
+.Bitpuzzle-board {
   margin: 0 auto;
 }
 
-#bitpuzzle .hints,
-#bitpuzzle .puzzle {
+.Hints,
+.Puzzle {
   border-collapse: collapse;
 
   font-family: 'Anonymous Pro', monospace;
@@ -13,18 +13,18 @@
   text-align: center;
 }
 
-#bitpuzzle .hints td,
-#bitpuzzle .puzzle td {
+.Cell {
   width: 2rem;
   height: 2rem;
 
   border: 1px solid rgba(0, 0, 0, 0.6);
 }
 
-#bitpuzzle .hints td {
+.Hints .Cell {
   border-color: rgba(0, 0, 0, 0);
 }
 
-#bitpuzzle .puzzle .selected {
+.Cell-selected {
   background-color: rgba(131, 177, 255, 1);
+
 }
