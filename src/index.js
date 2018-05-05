@@ -5,7 +5,7 @@ import './index.css';
 const WIDTH = 5;
 const HEIGHT = 5;
 
-class Cell extends React.Component {
+class PuzzleCell extends React.Component {
   constructor(props) {
     super(props);
 
@@ -30,16 +30,37 @@ class Cell extends React.Component {
   }
 }
 
+function HintCell() {
+  return (<td className="Cell" />)
+}
+
 function Puzzle() {
-  return <Table height={HEIGHT} width={WIDTH} className="Puzzle" />;
+  return <Table
+    height={HEIGHT}
+    width={WIDTH}
+    className="Puzzle"
+    cellType="puzzle" />;
+}
+
+const cellTypes = {
+  puzzle: PuzzleCell,
+  hint: HintCell
 }
 
 function VerticalHints() {
-  return <Table height={Math.ceil(HEIGHT / 2)} width={WIDTH} className="Hints" />;
+  return <Table
+    height={Math.ceil(HEIGHT / 2)}
+    width={WIDTH}
+    className="Hints"
+    cellType="hint" />;
 }
 
 function HorizontalHints() {
-  return <Table height={HEIGHT} width={Math.ceil(WIDTH / 2)} className="Hints"/>;
+  return <Table
+    height={HEIGHT}
+    width={Math.ceil(WIDTH / 2)}
+    className="Hints"
+    cellType="hint" />;
 }
 
 function TopHints() {
@@ -60,6 +81,7 @@ function RightHints() {
 
 class Table extends React.Component {
   renderCols = (totalCols) => {
+    const Cell = cellTypes[this.props.cellType];
     let cols = [];
 
     for (let i = 0; i < totalCols; i++) {
