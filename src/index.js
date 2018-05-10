@@ -6,136 +6,164 @@ const WIDTH = 5;
 const HEIGHT = 5;
 
 class PuzzleCell extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      isSelected: false,
-    };
-  }
-
-  handleClick = () => {
-    this.setState({
-      isSelected: !this.state.isSelected,
-    });
-  }
-
-  render() {
-    return (
-      <td
-        onClick={this.handleClick}
-        className={'Cell' + (this.state.isSelected ? ' Cell-selected' : '')}>
-      </td>
-    );
-  }
+    render() {
+        return (
+            <td
+                onClick={this.props.onClick}
+                className={'Cell' + (this.props.value ? ' Cell-selected' : '')}>
+            </td>
+        );
+    }
 }
 
 function HintCell() {
-  return (<td className="Cell" />)
+    return (<td className="Cell"/>)
 }
 
-function Puzzle() {
-  return <Table
-    height={HEIGHT}
-    width={WIDTH}
-    className="Puzzle"
-    cellType="puzzle" />;
-}
-
-const cellTypes = {
-  puzzle: PuzzleCell,
-  hint: HintCell
+function Puzzle(props) {
+    return <Table
+        height={HEIGHT}
+        width={WIDTH}
+        className="Puzzle"
+        cellType="puzzle"
+        onClick={props.onClick}
+        cellValues={props.values}
+    />;
 }
 
 function VerticalHints() {
-  return <Table
-    height={Math.ceil(HEIGHT / 2)}
-    width={WIDTH}
-    className="Hints"
-    cellType="hint" />;
+    return <Table
+        height={Math.ceil(HEIGHT / 2)}
+        width={WIDTH}
+        className="Hints"
+        cellType="hint"/>;
 }
 
 function HorizontalHints() {
-  return <Table
-    height={HEIGHT}
-    width={Math.ceil(WIDTH / 2)}
-    className="Hints"
-    cellType="hint" />;
+    return <Table
+        height={HEIGHT}
+        width={Math.ceil(WIDTH / 2)}
+        className="Hints"
+        cellType="hint"/>;
 }
 
 function TopHints() {
-  return <VerticalHints />;
+    return <VerticalHints/>;
 }
 
 function BottomHints() {
-  return <VerticalHints />;
+    return <VerticalHints/>;
 }
 
 function LeftHints() {
-  return <HorizontalHints />;
+    return <HorizontalHints/>;
 }
 
 function RightHints() {
-  return <HorizontalHints />;
+    return <HorizontalHints/>;
 }
 
 class Table extends React.Component {
-  renderCols = (totalCols) => {
-    const Cell = cellTypes[this.props.cellType];
-    let cols = [];
+    renderRows = (totalRows, totalCols) => {
+        let rows = [];
 
-    for (let i = 0; i < totalCols; i++) {
-      cols.push(<Cell key={'td' + i} />);
+        for (let j = 0; j < totalRows; j++) {
+            let cols = [];
+
+            for (let i = 0; i < totalCols; i++) {
+                const idx = j * WIDTH + i;
+
+                if (this.props.cellType === 'puzzle') {
+                    cols.push(
+                        <PuzzleCell
+                            key={idx}
+                            value={this.props.cellValues[idx]}
+                            onClick={() => this.props.onClick(idx)} />
+                    );
+                } else {
+                    cols.push(
+                        <HintCell
+                            key={idx}/>
+                    )
+                }
+            }
+
+            rows.push(<tr key={'row' + j}>{cols}</tr>)
+        }
+
+        return rows;
     }
 
-    return cols;
-  }
-
-  renderRows = (totalRows, totalCols) => {
-    let rows = [];
-
-    for (let i = 0; i < totalRows; i++) {
-      rows.push(<tr key={'tr' + i}>{this.renderCols(totalCols)}</tr>)
+    render() {
+        return (
+            <table className={this.props.className}>
+                <tbody>{this.renderRows(this.props.height, this.props.width)}</tbody>
+            </table>
+        )
     }
-
-    return rows;
-  }
-  render() {
-    return (
-      <table className={this.props.className}>
-        {this.renderRows(this.props.height, this.props.width)}
-      </table>
-    )
-  }
 }
 
 class Bitpuzzle extends React.Component {
-  render() {
-    return (
-      <div>
-        <table className="Bitpuzzle-board">
-          <tr>
-            <td></td>
-            <td><TopHints /></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td><LeftHints /></td>
-            <td><Puzzle /></td>
-            <td><RightHints /></td>
-          </tr>
-          <tr>
-            <td></td>
-            <td><BottomHints /></td>
-            <td></td>
-          </tr>
-        </table>
-      </div>
-    )
-  }
+    constructor(props) {
+        super(props);
+
+        this.handleClickOnPuzzle = this.handleClickOnPuzzle.bind(this);
+
+        this.state = {
+            puzzle: new Array(HEIGHT * WIDTH).fill(false),
+        };
+    }
+
+    handleClickOnPuzzle(i) {
+        const puzzle = this.state.puzzle.slice();
+        puzzle[i] = !puzzle[i];
+
+        this.setState({
+            puzzle: puzzle,
+        });
+    }
+
+    render() {
+        return (
+            <div>
+                <table className="Bitpuzzle-board">
+                    <tbody>
+                        <tr>
+                            <td/>
+                            <td>
+                                <TopHints/>
+                            </td>
+                            <td/>
+                        </tr>
+                        <tr>
+                            <td>
+                                <LeftHints/>
+                            </td>
+                            <td>
+                                <Puzzle
+                                    onClick={this.handleClickOnPuzzle}
+                                    values={this.state.puzzle}
+                                />
+                            </td>
+                            <td>
+                                <RightHints/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td/>
+                            <td>
+                                <BottomHints/>
+                            </td>
+                            <td/>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        )
+    }
 }
 
 ReactDOM.render(
-  <Bitpuzzle />,
-  document.getElementById('root')
+    <Bitpuzzle/>,
+    document.getElementById('root')
 );
