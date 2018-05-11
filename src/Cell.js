@@ -1,8 +1,8 @@
 import React from "react";
 import './Cell.css';
 
-function HintCell() {
-    return (<td className="Cell"/>)
+function HintCell(props) {
+    return (<td className="Cell">{props.value}</td>);
 }
 
 function PuzzleCell(props) {

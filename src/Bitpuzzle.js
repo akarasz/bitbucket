@@ -13,17 +13,41 @@ class Bitpuzzle extends React.Component {
         this.handleClickOnPuzzle = this.handleClickOnPuzzle.bind(this);
 
         this.state = {
-            puzzle: new Array(HEIGHT * WIDTH).fill(false),
+            board: new Array(HEIGHT * WIDTH).fill(false),
+            horizontalHints: new Array(HEIGHT * (Math.ceil(WIDTH / 2))).fill(3),
         };
     }
 
     handleClickOnPuzzle(i) {
-        const puzzle = this.state.puzzle.slice();
-        puzzle[i] = !puzzle[i];
+        const board = this.state.board.slice();
+
+        board[i] = !board[i];
+
+        const horizontalHints = this.calculateHorizontalHints(board);
+        console.log(horizontalHints);
 
         this.setState({
-            puzzle: puzzle,
+            board: board,
+            horizontalHints: horizontalHints,
         });
+    }
+
+    calculateHorizontalHints(board) {
+        let horizontalHints = [];
+
+        for (let j = 0; j < HEIGHT; j++) {
+            const rowHints = board.slice(WIDTH * j, WIDTH * j + WIDTH)
+                .map(v => v ? '1': '0')
+                .join('')
+                .split('0')
+                .filter(v => v !== '')
+                .map(v => v.length);
+
+            horizontalHints = horizontalHints.concat(rowHints);
+            horizontalHints = horizontalHints.concat(new Array(Math.ceil(WIDTH / 2) - rowHints.length));
+        }
+
+        return horizontalHints;
     }
 
     render() {
@@ -40,16 +64,17 @@ class Bitpuzzle extends React.Component {
                     </tr>
                     <tr>
                         <td>
-                            <LeftHints/>
+                            <LeftHints
+                                values={this.state.horizontalHints}/>
                         </td>
                         <td>
                             <Board
                                 onClick={this.handleClickOnPuzzle}
-                                values={this.state.puzzle}
-                            />
+                                values={this.state.board}/>
                         </td>
                         <td>
-                            <RightHints/>
+                            <RightHints
+                                values={this.state.horizontalHints}/>
                         </td>
                     </tr>
                     <tr>
@@ -66,4 +91,4 @@ class Bitpuzzle extends React.Component {
     }
 }
 
-export default Bitpuzzle;
+export default Bitpuzzle;;

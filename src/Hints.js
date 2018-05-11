@@ -3,22 +3,29 @@ import React from "react";
 import Table from "./Table";
 import './Hints.css';
 
-function HorizontalHints() {
+function HorizontalHints(props) {
     return (
         <Table
             height={HEIGHT}
             width={Math.ceil(WIDTH / 2)}
             className="Hints"
-            cellType="hint"/>
+            cellType="hint"
+            values={props.values}/>
     );
 }
 
-function LeftHints() {
-    return <HorizontalHints/>;
+function LeftHints(props) {
+    return (
+        <HorizontalHints
+            values={props.values}/>
+    );
 }
 
-function RightHints() {
-    return <HorizontalHints/>;
+function RightHints(props) {
+    return (
+        <HorizontalHints
+            values={props.values}/>
+    );
 }
 
 
