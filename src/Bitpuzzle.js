@@ -1,9 +1,6 @@
 import React from "react";
-import TopHints from "./TopHints";
-import LeftHints from "./LeftHints";
 import Board from "./Board";
-import RightHints from "./RightHints";
-import BottomHints from "./BottomHints";
+import {BottomHints, LeftHints, RightHints, TopHints} from "./Hints";
 
 export const WIDTH = 5;
 export const HEIGHT = 5;

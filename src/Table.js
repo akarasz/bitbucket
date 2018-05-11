@@ -1,11 +1,5 @@
 import React from "react";
-import PuzzleCell from "./PuzzleCell";
-import HintCell from "./HintCell";
-
-const cellTypes = {
-    puzzle: PuzzleCell,
-    hint: HintCell
-};
+import {cellTypes} from "./Cell";
 
 class Table extends React.Component {
     renderRows = (totalRows, totalCols, valuesArray = new Array(totalRows * totalCols), clickHandler = () => {}) => {
