@@ -1,0 +1,11 @@
+.Cell {
+    width: 2rem;
+    height: 2rem;
+
+    border: 1px solid rgba(0, 0, 0, 0.6);
+}
+
+.Cell-selected {
+    background-color: rgba(131, 177, 255, 1);
+
+}

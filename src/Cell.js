@@ -1,4 +1,5 @@
 import React from "react";
+import './Cell.css';
 
 function HintCell() {
     return (<td className="Cell"/>)

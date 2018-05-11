@@ -37,7 +37,7 @@ class Table extends React.Component {
                     this.props.onClick,
                 )}</tbody>
             </table>
-        )
+        );
     }
 }
 

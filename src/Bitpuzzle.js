@@ -1,6 +1,7 @@
 import React from "react";
 import Board from "./Board";
 import {BottomHints, LeftHints, RightHints, TopHints} from "./Hints";
+import './Bitpuzzle.css';
 
 export const WIDTH = 5;
 export const HEIGHT = 5;
@@ -28,7 +29,7 @@ class Bitpuzzle extends React.Component {
     render() {
         return (
             <div>
-                <table className="Bitpuzzle-board">
+                <table className="Bitpuzzle">
                     <tbody>
                     <tr>
                         <td/>
