@@ -6,6 +6,21 @@ import './Bitpuzzle.css';
 export const WIDTH = 5;
 export const HEIGHT = 5;
 
+function calculateHorizontalHints(board) {
+    return new Array(HEIGHT)
+        .fill([])
+        .map((row, i) => calculateRow(board, i));
+}
+
+function calculateRow(board, rowIndex) {
+    return board.slice(WIDTH * rowIndex, WIDTH * rowIndex + WIDTH)
+        .map(v => v ? '1': '0')
+        .join('')
+        .split('0')
+        .filter(v => v !== '')
+        .map(v => v.length)
+}
+
 class Bitpuzzle extends React.Component {
     constructor(props) {
         super(props);
@@ -23,25 +38,12 @@ class Bitpuzzle extends React.Component {
 
         board[i] = !board[i];
 
-        const horizontalHints = this.calculateHorizontalHints(board);
+        const horizontalHints = calculateHorizontalHints(board);
 
         this.setState({
             board: board,
             horizontalHints: horizontalHints,
         });
-    }
-
-    calculateHorizontalHints(board) {
-        return new Array(HEIGHT)
-            .fill([])
-            .map((row, i) =>
-                board.slice(WIDTH * i, WIDTH * i + WIDTH)
-                    .map(v => v ? '1': '0')
-                    .join('')
-                    .split('0')
-                    .filter(v => v !== '')
-                    .map(v => v.length)
-            );
     }
 
     render() {
