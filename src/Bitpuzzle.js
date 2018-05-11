@@ -4,8 +4,8 @@ import {BottomHints, LeftHints, RightHints, TopHints} from "./Hints";
 import './Bitpuzzle.css';
 import {transpose} from "./matrix";
 
-export const WIDTH = 5;
-export const HEIGHT = 5;
+export const WIDTH = 3;
+export const HEIGHT = 3;
 export const DENSITY = .5;
 
 function calculateHints(board, totalRows, rowLength) {
@@ -20,7 +20,7 @@ function calculateRow(board, rowIndex, rowLength) {
         .join('')
         .split('0')
         .filter(v => v !== '')
-        .map(v => v.length)
+        .map(v => v.length);
 }
 
 function generateRandomBoard() {
@@ -34,6 +34,10 @@ function generateRandomBoard() {
         [result[i], result[j]] = [result[j], result[i]];
     }
     return result;
+}
+
+function hintsToString(hints) {
+    return hints.map(row => row.join(',')).join(';');
 }
 
 class Bitpuzzle extends React.Component {
@@ -55,6 +59,13 @@ class Bitpuzzle extends React.Component {
         const board = this.state.board.slice();
 
         board[i] = !board[i];
+
+        const isHorizontalCorrect = hintsToString(this.state.horizontalHints) === hintsToString(calculateHints(board, HEIGHT, WIDTH));
+        const isVerticalCorrect = hintsToString(this.state.verticalHints) === hintsToString(calculateHints(transpose(board, WIDTH, HEIGHT), WIDTH, HEIGHT));
+
+        if (isHorizontalCorrect && isVerticalCorrect) {
+            console.log("DONE");
+        }
 
         this.setState({
             board: board,
