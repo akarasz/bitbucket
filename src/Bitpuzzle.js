@@ -4,17 +4,17 @@ import {BottomHints, LeftHints, RightHints, TopHints} from "./Hints";
 import './Bitpuzzle.css';
 import {transpose} from "./matrix";
 
-export const WIDTH = 5;
+export const WIDTH = 10;
 export const HEIGHT = 5;
 
-function calculateHints(board) {
-    return new Array(HEIGHT)
+function calculateHints(board, totalRows, rowLength) {
+    return new Array(totalRows)
         .fill([])
-        .map((row, i) => calculateRow(board, i));
+        .map((row, i) => calculateRow(board, i, rowLength));
 }
 
-function calculateRow(board, rowIndex) {
-    return board.slice(WIDTH * rowIndex, WIDTH * rowIndex + WIDTH)
+function calculateRow(board, rowIndex, rowLength) {
+    return board.slice(rowLength * rowIndex, rowLength * rowIndex + rowLength)
         .map(v => v ? '1': '0')
         .join('')
         .split('0')
@@ -40,8 +40,8 @@ class Bitpuzzle extends React.Component {
 
         board[i] = !board[i];
 
-        const horizontalHints = calculateHints(board);
-        const verticalHints = calculateHints(transpose(board, WIDTH, HEIGHT));
+        const horizontalHints = calculateHints(board, HEIGHT, WIDTH);
+        const verticalHints = calculateHints(transpose(board, WIDTH, HEIGHT), WIDTH, HEIGHT);
 
         this.setState({
             board: board,
@@ -93,4 +93,4 @@ class Bitpuzzle extends React.Component {
     }
 }
 
-export default Bitpuzzle;;
+export default Bitpuzzle;

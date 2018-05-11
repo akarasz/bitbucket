@@ -54,16 +54,20 @@ function VerticalHints(props) {
 }
 
 function TopHints(props) {
+    console.log(props.values);
+    console.log(withZerosBefore(props.values, Math.ceil(HEIGHT / 2)));
+    console.log(transpose(withZerosBefore(props.values, Math.ceil(HEIGHT / 2)), Math.ceil(HEIGHT / 2), WIDTH));
+
     return (
         <VerticalHints
-            values={transpose(withZerosBefore(props.values, Math.ceil(HEIGHT / 2)), Math.ceil(WIDTH / 2), HEIGHT)}/>
+            values={transpose(withZerosBefore(props.values, Math.ceil(HEIGHT / 2)), Math.ceil(HEIGHT / 2), WIDTH)}/>
     );
 }
 
 function BottomHints(props) {
     return (
         <VerticalHints
-            values={transpose(withZerosAfter(props.values, Math.ceil(HEIGHT / 2)), Math.ceil(WIDTH / 2), HEIGHT)}/>
+            values={transpose(withZerosAfter(props.values, Math.ceil(HEIGHT / 2)), Math.ceil(HEIGHT / 2), WIDTH)}/>
     );
 }
 
