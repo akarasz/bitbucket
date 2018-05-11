@@ -15,16 +15,24 @@ function HorizontalHints(props) {
 }
 
 function LeftHints(props) {
+    const values = props.values
+        .map(row => new Array(Math.ceil(WIDTH / 2 - row.length)).concat(row))
+        .reduce((r, v) => r.concat(v), []);
+
     return (
         <HorizontalHints
-            values={props.values}/>
+            values={values}/>
     );
 }
 
 function RightHints(props) {
+    const values = props.values
+        .map(row => row.concat(new Array(Math.ceil(WIDTH / 2 - row.length))))
+        .reduce((r, v) => r.concat(v), []);
+
     return (
         <HorizontalHints
-            values={props.values}/>
+            values={values}/>
     );
 }
 

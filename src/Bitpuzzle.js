@@ -14,7 +14,7 @@ class Bitpuzzle extends React.Component {
 
         this.state = {
             board: new Array(HEIGHT * WIDTH).fill(false),
-            horizontalHints: new Array(HEIGHT * (Math.ceil(WIDTH / 2))).fill(3),
+            horizontalHints: new Array(HEIGHT).fill([]),
         };
     }
 
@@ -24,7 +24,6 @@ class Bitpuzzle extends React.Component {
         board[i] = !board[i];
 
         const horizontalHints = this.calculateHorizontalHints(board);
-        console.log(horizontalHints);
 
         this.setState({
             board: board,
@@ -33,21 +32,16 @@ class Bitpuzzle extends React.Component {
     }
 
     calculateHorizontalHints(board) {
-        let horizontalHints = [];
-
-        for (let j = 0; j < HEIGHT; j++) {
-            const rowHints = board.slice(WIDTH * j, WIDTH * j + WIDTH)
-                .map(v => v ? '1': '0')
-                .join('')
-                .split('0')
-                .filter(v => v !== '')
-                .map(v => v.length);
-
-            horizontalHints = horizontalHints.concat(rowHints);
-            horizontalHints = horizontalHints.concat(new Array(Math.ceil(WIDTH / 2) - rowHints.length));
-        }
-
-        return horizontalHints;
+        return new Array(HEIGHT)
+            .fill([])
+            .map((row, i) =>
+                board.slice(WIDTH * i, WIDTH * i + WIDTH)
+                    .map(v => v ? '1': '0')
+                    .join('')
+                    .split('0')
+                    .filter(v => v !== '')
+                    .map(v => v.length)
+            );
     }
 
     render() {
