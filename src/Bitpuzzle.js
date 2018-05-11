@@ -4,8 +4,9 @@ import {BottomHints, LeftHints, RightHints, TopHints} from "./Hints";
 import './Bitpuzzle.css';
 import {transpose} from "./matrix";
 
-export const WIDTH = 10;
+export const WIDTH = 5;
 export const HEIGHT = 5;
+export const DENSITY = .5;
 
 function calculateHints(board, totalRows, rowLength) {
     return new Array(totalRows)
@@ -22,16 +23,31 @@ function calculateRow(board, rowIndex, rowLength) {
         .map(v => v.length)
 }
 
+function generateRandomBoard() {
+    const trueValues = Math.round(WIDTH * HEIGHT * DENSITY);
+    const falseValues = WIDTH * HEIGHT - trueValues;
+
+    const result = new Array(trueValues).fill(true).concat(new Array(falseValues).fill(false));
+
+    for (let i = result.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [result[i], result[j]] = [result[j], result[i]];
+    }
+    return result;
+}
+
 class Bitpuzzle extends React.Component {
     constructor(props) {
         super(props);
 
         this.handleClickOnPuzzle = this.handleClickOnPuzzle.bind(this);
 
+        const generatedPuzzle = generateRandomBoard();
+
         this.state = {
             board: new Array(HEIGHT * WIDTH).fill(false),
-            horizontalHints: new Array(HEIGHT).fill([]),
-            verticalHints: new Array(WIDTH).fill([]),
+            horizontalHints: calculateHints(generatedPuzzle, HEIGHT, WIDTH),
+            verticalHints: calculateHints(transpose(generatedPuzzle, WIDTH, HEIGHT), WIDTH, HEIGHT),
         };
     }
 
@@ -40,13 +56,8 @@ class Bitpuzzle extends React.Component {
 
         board[i] = !board[i];
 
-        const horizontalHints = calculateHints(board, HEIGHT, WIDTH);
-        const verticalHints = calculateHints(transpose(board, WIDTH, HEIGHT), WIDTH, HEIGHT);
-
         this.setState({
             board: board,
-            horizontalHints: horizontalHints,
-            verticalHints: verticalHints,
         });
     }
 
