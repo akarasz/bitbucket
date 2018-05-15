@@ -1,4 +1,3 @@
-import {HEIGHT, WIDTH} from "./Bitpuzzle";
 import React from "react";
 import Table from "./Table";
 import './Hints.css';
@@ -17,10 +16,13 @@ function withZerosAfter(values, totalLength) {
 }
 
 function HorizontalHints(props) {
+    const width = props.width;
+    const height = props.height;
+
     return (
         <Table
-            height={HEIGHT}
-            width={Math.ceil(WIDTH / 2)}
+            height={height}
+            width={Math.ceil(width / 2)}
             className="Hints"
             cellType="hint"
             values={props.values}/>
@@ -28,25 +30,36 @@ function HorizontalHints(props) {
 }
 
 function LeftHints(props) {
+    const width = props.width;
+    const height = props.height;
+
     return (
         <HorizontalHints
-            values={withZerosBefore(props.values, Math.ceil(WIDTH / 2))}/>
+            width={width} height={height}
+            values={withZerosBefore(props.values, Math.ceil(width / 2))}/>
     );
 }
 
 function RightHints(props) {
+    const width = props.width;
+    const height = props.height;
+
     return (
         <HorizontalHints
-            values={withZerosAfter(props.values, Math.ceil(WIDTH / 2))}/>
+            width={width} height={height}
+            values={withZerosAfter(props.values, Math.ceil(width / 2))}/>
     );
 }
 
 
 function VerticalHints(props) {
+    const width = props.width;
+    const height = props.height;
+
     return (
         <Table
-            height={Math.ceil(HEIGHT / 2)}
-            width={WIDTH}
+            height={Math.ceil(height / 2)}
+            width={width}
             className="Hints"
             cellType="hint"
             values={props.values}/>
@@ -54,16 +67,24 @@ function VerticalHints(props) {
 }
 
 function TopHints(props) {
+    const width = props.width;
+    const height = props.height;
+
     return (
         <VerticalHints
-            values={transpose(withZerosBefore(props.values, Math.ceil(HEIGHT / 2)), Math.ceil(HEIGHT / 2), WIDTH)}/>
+            width={width} height={height}
+            values={transpose(withZerosBefore(props.values, Math.ceil(height / 2)), Math.ceil(height / 2), width)}/>
     );
 }
 
 function BottomHints(props) {
+    const width = props.width;
+    const height = props.height;
+
     return (
         <VerticalHints
-            values={transpose(withZerosAfter(props.values, Math.ceil(HEIGHT / 2)), Math.ceil(HEIGHT / 2), WIDTH)}/>
+            width={width} height={height}
+            values={transpose(withZerosAfter(props.values, Math.ceil(height / 2)), Math.ceil(height / 2), width)}/>
     );
 }
 

@@ -4,6 +4,6 @@ import Bitpuzzle from './Bitpuzzle';
 import './index.css';
 
 ReactDOM.render(
-    <Bitpuzzle/>,
+    <Bitpuzzle width={5} height={5} density={.5}/>,
     document.getElementById('root')
 );

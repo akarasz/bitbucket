@@ -4,10 +4,6 @@ import {BottomHints, LeftHints, RightHints, TopHints} from "./Hints";
 import './Bitpuzzle.css';
 import {transpose} from "./matrix";
 
-export const WIDTH = 3;
-export const HEIGHT = 3;
-export const DENSITY = .5;
-
 function calculateHints(board, totalRows, rowLength) {
     return new Array(totalRows)
         .fill([])
@@ -23,9 +19,9 @@ function calculateRow(board, rowIndex, rowLength) {
         .map(v => v.length);
 }
 
-function generateRandomBoard() {
-    const trueValues = Math.round(WIDTH * HEIGHT * DENSITY);
-    const falseValues = WIDTH * HEIGHT - trueValues;
+function generateRandomBoard(width, height, density) {
+    const trueValues = Math.round(width * height * density);
+    const falseValues = width * height - trueValues;
 
     const result = new Array(trueValues).fill(true).concat(new Array(falseValues).fill(false));
 
@@ -41,27 +37,35 @@ function hintsToString(hints) {
 }
 
 class Bitpuzzle extends React.Component {
+
     constructor(props) {
         super(props);
 
+        const width = props.width;
+        const height = props.height;
+        const density = props.density;
+
         this.handleClickOnPuzzle = this.handleClickOnPuzzle.bind(this);
 
-        const generatedPuzzle = generateRandomBoard();
+        const generatedPuzzle = generateRandomBoard(width, height, density);
 
         this.state = {
-            board: new Array(HEIGHT * WIDTH).fill(false),
-            horizontalHints: calculateHints(generatedPuzzle, HEIGHT, WIDTH),
-            verticalHints: calculateHints(transpose(generatedPuzzle, WIDTH, HEIGHT), WIDTH, HEIGHT),
+            board: new Array(width * height).fill(false),
+            horizontalHints: calculateHints(generatedPuzzle, height, width),
+            verticalHints: calculateHints(transpose(generatedPuzzle, width, height), width, height),
         };
     }
 
     handleClickOnPuzzle(i) {
         const board = this.state.board.slice();
 
+        const width = this.props.width;
+        const height = this.props.height;
+
         board[i] = !board[i];
 
-        const isHorizontalCorrect = hintsToString(this.state.horizontalHints) === hintsToString(calculateHints(board, HEIGHT, WIDTH));
-        const isVerticalCorrect = hintsToString(this.state.verticalHints) === hintsToString(calculateHints(transpose(board, WIDTH, HEIGHT), WIDTH, HEIGHT));
+        const isHorizontalCorrect = hintsToString(this.state.horizontalHints) === hintsToString(calculateHints(board, height, width));
+        const isVerticalCorrect = hintsToString(this.state.verticalHints) === hintsToString(calculateHints(transpose(board, width, height), width, height));
 
         if (isHorizontalCorrect && isVerticalCorrect) {
             console.log("DONE");
@@ -81,6 +85,7 @@ class Bitpuzzle extends React.Component {
                         <td/>
                         <td>
                             <TopHints
+                                width={this.props.width} height={this.props.height}
                                 values={this.state.verticalHints}/>
                         </td>
                         <td/>
@@ -88,15 +93,18 @@ class Bitpuzzle extends React.Component {
                     <tr>
                         <td>
                             <LeftHints
+                                width={this.props.width} height={this.props.height}
                                 values={this.state.horizontalHints}/>
                         </td>
                         <td>
                             <Board
+                                width={this.props.width} height={this.props.height}
                                 onClick={this.handleClickOnPuzzle}
                                 values={this.state.board}/>
                         </td>
                         <td>
                             <RightHints
+                                width={this.props.width} height={this.props.height}
                                 values={this.state.horizontalHints}/>
                         </td>
                     </tr>
@@ -104,6 +112,7 @@ class Bitpuzzle extends React.Component {
                         <td/>
                         <td>
                             <BottomHints
+                                width={this.props.width} height={this.props.height}
                                 values={this.state.verticalHints}/>
                         </td>
                         <td/>

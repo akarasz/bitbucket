@@ -1,12 +1,11 @@
-import {HEIGHT, WIDTH} from "./Bitpuzzle";
 import React from "react";
 import Table from "./Table";
 
 function Board(props) {
     return (
         <Table
-            height={HEIGHT}
-            width={WIDTH}
+            height={props.height}
+            width={props.width}
             className="Board"
             cellType="puzzle"
             onClick={props.onClick}
